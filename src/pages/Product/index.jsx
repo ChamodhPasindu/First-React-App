@@ -9,13 +9,13 @@ import {
     TableContainer,
     TableHead,
     TableRow,
-    TextField
+    TextField,Tooltip
 } from "@mui/material";
+
+import DeleteIcon from '@mui/icons-material/Delete';
+import IconButton from '@mui/material/IconButton';
+import EditIcon from '@mui/icons-material/Edit';
 import NavBar from '../NavBar'
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
 
 
 class Product extends Component {
@@ -44,12 +44,14 @@ class Product extends Component {
 
         console.log(this.state.products)
     }
+
     updateProduct(row) {
         console.log(row)
     }
-    deleteProduct(row) {
-        console.log(row)
-
+    deleteProduct=(index)=> {
+        let products = this.state.products;
+        products.pop(index)
+        this.setState({products})
     }
 
 
@@ -178,23 +180,23 @@ class Product extends Component {
                                     </TableHead>
                                     <TableBody>
 
-                                        {/*          {
-                                        this.state.customers.map((row,index) => (
+                                                  {
+                                        this.state.products.map((row,index) => (
                                             <TableRow key={index}>
                                                 <TableCell style={{fontSize: '15px'}}
                                                            align="center">{row.code}</TableCell>
                                                 <TableCell style={{fontSize: '15px'}}
-                                                           align="center">{row.gender}</TableCell>
+                                                           align="center">{row.description}</TableCell>
                                                 <TableCell style={{fontSize: '15px'}}
-                                                           align="center">{row.nic}</TableCell>
+                                                           align="center">{row.price}</TableCell>
                                                 <TableCell style={{fontSize: '15px'}}
-                                                           align="center">{row.email}</TableCell>
+                                                           align="center">{row.qty}</TableCell>
                                                 <TableCell style={{fontSize: '15px'}}
                                                            align="center">
                                                     <Tooltip title="Edit">
                                                         <IconButton
                                                             onClick={() => {
-                                                                this.updateCustomer(row);
+                                                                this.updateProduct(row);
                                                             }}
                                                         >
                                                             <EditIcon color="primary"/>
@@ -203,7 +205,7 @@ class Product extends Component {
                                                     <Tooltip title="Delete">
                                                         <IconButton
                                                             onClick={() => {
-                                                                this.deleteCustomer(row)
+                                                                this.deleteProduct(index)
                                                             }}
                                                         >
                                                             <DeleteIcon color="error"/>
@@ -211,7 +213,7 @@ class Product extends Component {
                                                     </Tooltip></TableCell>
                                             </TableRow>
                                         ))
-                                    }*/}
+                                    }
                                     </TableBody>
                                 </Table>
                             </TableContainer>

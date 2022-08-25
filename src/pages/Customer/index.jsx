@@ -1,4 +1,4 @@
-import React from "react";
+import React, {createContext} from "react";
 import {Fragment, Component} from "react";
 import "../Product/style.css";
 import {
@@ -22,11 +22,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import NavBar from "../NavBar";
 
-const date = new Date();
-const futureDate = date.getDate() + 3;
-date.setDate(futureDate);
-const defaultValue = date.toLocaleDateString('en-CA');
-
+const Name=createContext();
 
 class Customer extends Component {
     constructor(props) {
@@ -43,7 +39,6 @@ class Customer extends Component {
         }
     }
 
-
     saveCustomer = () => {
         console.log(this.state.customerForm)
         console.log(this.state.customers)
@@ -56,14 +51,16 @@ class Customer extends Component {
 
         console.log(this.state.customers)
     }
+
     updateCustomer(row) {
         console.log(row)
     }
-    deleteCustomer(row) {
-        console.log(row)
+    deleteCustomer(index) {
+        let customers = this.state.customers;
+        customers.pop(index)
+        this.setState({customers})
 
     }
-
 
     clearFields = () => {
         this.setState({
@@ -125,7 +122,6 @@ class Customer extends Component {
                                         labelId="demo-simple-select-label"
                                         id="demo-simple-select"
                                         label="User Name"
-                                        defaultValue=""
                                         onChange={(e) => {
                                             let customerForm = this.state.customerForm;
                                             customerForm.gender = this.state.gender[e.target.value];
@@ -194,7 +190,7 @@ class Customer extends Component {
                                     </TableHead>
                                     <TableBody>
 
-                                  {/*          {
+                                            {
                                         this.state.customers.map((row,index) => (
                                             <TableRow key={index}>
                                                 <TableCell style={{fontSize: '15px'}}
@@ -219,7 +215,8 @@ class Customer extends Component {
                                                     <Tooltip title="Delete">
                                                         <IconButton
                                                             onClick={() => {
-                                                                this.deleteCustomer(row)
+                                                                console.log("hre")
+                                                                this.deleteCustomer(index)
                                                             }}
                                                         >
                                                             <DeleteIcon color="error"/>
@@ -227,7 +224,7 @@ class Customer extends Component {
                                                     </Tooltip></TableCell>
                                             </TableRow>
                                         ))
-                                    }*/}
+                                    }
                                     </TableBody>
                                 </Table>
                             </TableContainer>

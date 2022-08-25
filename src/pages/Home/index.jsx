@@ -13,9 +13,6 @@ class HomePage extends Component {
         }
     }
 
-    setCarts = async () => {
-
-    }
 
     setProducts = async () => {
 
@@ -25,15 +22,9 @@ class HomePage extends Component {
 
     }
 
-    setUsername = async () => {
-
-    }
-
     componentDidMount() {
-        this.setCarts()
         this.setProducts()
         this.setUsers()
-        this.setUsername()
     }
 
     render() {

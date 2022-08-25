@@ -17,7 +17,7 @@ class NavBar extends Component {
                                 marginLeft: '5px',
                                 fontSize: 'medium'
                             }}>Dashboard</Button> </Link>
-                        <Tabs value={1} sx={{margin: 'auto', mr: 5, display: 'flex', alignItems: "center"}}>
+                        <Tabs sx={{margin: 'auto', mr: 5, display: 'flex', alignItems: "center"}}>
 
                             <Link to={"/product"} style={{textDecoration: 'none'}}>
                                 <Button style={{
