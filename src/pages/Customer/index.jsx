@@ -1,7 +1,21 @@
 import React from "react";
 import {Fragment, Component} from "react";
 import "../Product/style.css";
-import {TextField, Button} from "@mui/material";
+import {
+    TextField,
+    Button,
+    TableContainer,
+    Table,
+    TableHead,
+    TableRow,
+    TableCell,
+    TableBody,
+    Paper, Tooltip,
+} from "@mui/material";
+
+import DeleteIcon from '@mui/icons-material/Delete';
+import IconButton from '@mui/material/IconButton';
+import EditIcon from '@mui/icons-material/Edit';
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -13,45 +27,51 @@ const futureDate = date.getDate() + 3;
 date.setDate(futureDate);
 const defaultValue = date.toLocaleDateString('en-CA');
 
+
 class Customer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            cartForm: {
-                userId: '',
-                date: defaultValue,
-                products:[{
-                    productId:'',
-                    quantity:''
-                }],
+            customerForm: {
+                customer_name: '',
+                gender:'',
+                nic:'',
+                email:'',
             },
-            products: [],
-            users: [],
+            gender:["male","female"],
+            customers: [],
         }
     }
 
-    saveCart = async () => {
+
+    saveCustomer = () => {
+        console.log(this.state.customerForm)
+        console.log(this.state.customers)
+
+
+        let customerForm = this.state.customerForm;
+        let customers = this.state.customers;
+        customers.push(customerForm);
+        this.setState({customers})
+
+        console.log(this.state.customers)
+    }
+    updateCustomer(row) {
+        console.log(row)
+    }
+    deleteCustomer(row) {
+        console.log(row)
 
     }
 
-    setProductTitle = async () => {
-
-    }
-
-    setUserName = async () => {
-
-    }
-
-    componentDidMount() {
-        this.setProductTitle()
-        this.setUserName()
-    }
 
     clearFields = () => {
         this.setState({
-            cartForm: {
-                date: defaultValue,
-                products: [{quantity:''}],
+            customerForm: {
+                customer_name: '',
+                gender:'',
+                nic:'',
+                email:'',
             }
         })
     }
@@ -61,86 +81,74 @@ class Customer extends Component {
             <Fragment>
                 <NavBar/>
                 <div className="manage-container">
-                    <form className="manage-sub-container"
-                                   ref="form"
-                                   onSubmit={this.saveCart}
-                                   onError={errors => console.log(errors)}>
+                    <div className="manage-sub-container">
                         <div className="manage-form-title">
                             <h1>Customer Manage</h1>
                         </div>
-                        <div className="manage-form-detail">
+                        <div className="manage-form-detail" >
                             <div className="manage-form-detail-col1">
-                                <FormControl fullWidth>
+                                <div style={{width: '100%'}}>
+                                    <TextField
+                                        sx={{marginTop: "30px",width:'100%'}}
+                                        id="outlined-basic"
+                                        label="Customer Name"
+                                        variant="outlined"
+                                        value={this.state.customerForm.customer_name}
+                                        onChange={(e) => {
+                                            let customerForm = this.state.customerForm;
+                                            customerForm.customer_name = e.target.value
+                                            this.setState({customerForm})
+                                        }}
+                                    />
+                                </div>
+                                <div style={{width: '100%'}}>
+                                    <TextField
+                                        sx={{marginTop: "30px",width:'100%'}}
+                                        id="outlined-basic"
+                                        label="NIC"
+                                        variant="outlined"
+                                        value={this.state.customerForm.nic}
+                                        onChange={(e) => {
+                                            let customerForm = this.state.customerForm;
+                                            customerForm.nic = e.target.value
+                                            this.setState({customerForm})
+                                        }}
+                                    />
+                                </div>
+                            </div>
+                            <div className="manage-form-detail-col1">
+                                <FormControl fullWidth style={{marginTop:"30px"}}>
                                     <InputLabel id="demo-simple-select-label">
-                                        User Name
+                                        Gender
                                     </InputLabel>
                                     <Select
                                         labelId="demo-simple-select-label"
                                         id="demo-simple-select"
                                         label="User Name"
+                                        defaultValue=""
                                         onChange={(e) => {
-                                            let cartForm = this.state.cartForm;
-                                            cartForm.userId = e.target.value;
-                                            this.setState({cartForm})
+                                            let customerForm = this.state.customerForm;
+                                            customerForm.gender = this.state.gender[e.target.value];
+                                            this.setState({customerForm})
                                         }}
                                     >
-                                        {this.state.users.map((user) => (
-                                            <MenuItem
-                                                value={user.id}>{user.name.firstname + " " + user.name.lastname}</MenuItem>
-                                        ))}
+                                        <MenuItem value={0}>male</MenuItem>
+                                        <MenuItem value={1}>Female</MenuItem>
                                     </Select>
                                 </FormControl>
-                                <FormControl sx={{marginTop: "30px",width:'100%'}}>
-                                    <InputLabel id="demo-simple-select-label">
-                                        Product Title
-                                    </InputLabel>
-                                    <Select
-                                        labelId="demo-simple-select-label"
-                                        id="demo-simple-select"
-                                        label="Product Title"
-                                        onChange={(e) => {
-                                            let cartForm = this.state.cartForm;
-                                            cartForm.products[0].productId = e.target.value;
-                                            this.setState({cartForm})
-                                        }}
-                                    >
-                                        {this.state.products.map((product) => (
-                                            <MenuItem value={product.id}>{product.title}</MenuItem>
-                                        ))}
-                                    </Select>
-                                </FormControl>
-                            </div>
-                            <div className="manage-form-detail-col1">
-                                <TextField
-                                    id="date"
-                                    label="Date"
-                                    type="date"
-                                    fullWidth
-                                    value={this.state.cartForm.date}
-                                    defaultValue={this.state.cartForm.date}
-                                    InputLabelProps={{
-                                        shrink: true,
-                                    }}
-                                    onChange={(e) => {
-                                        let cartForm = this.state.cartForm;
-                                        cartForm.date = e.target.value
-                                        this.setState({cartForm})
-                                    }}
-                                />
+
                                 <div style={{width: '100%'}}>
                                     <TextField
                                         sx={{marginTop: "30px",width:'100%'}}
                                         id="outlined-basic"
-                                        label="Qty"
-                                        type="number"
+                                        label="Email"
                                         variant="outlined"
-                                        value={this.state.cartForm.products[0].quantity}
+                                        value={this.state.customerForm.email}
                                         onChange={(e) => {
-                                            let cartForm = this.state.cartForm;
-                                            cartForm.products[0].quantity = +(e.target.value)
-                                            this.setState({cartForm})
+                                            let customerForm = this.state.customerForm;
+                                            customerForm.email = e.target.value
+                                            this.setState({customerForm})
                                         }}
-                                        validators={['required']}
                                     />
                                 </div>
 
@@ -158,15 +166,81 @@ class Customer extends Component {
                             >
                                 Clear
                             </Button>
-                            <Button variant="outlined" size="large" type="submit">
+                            <Button variant="outlined" size="large" type="button" onClick={this.saveCustomer}>
                                 Save
                             </Button>
                         </div>
-                    </form>
+                    </div>
+
+                    <div className="user-sub-table-container">
+                        <div className="user-form-title">
+                            <h1>All Customers</h1>
+                        </div>
+                        <div style={{overflow: 'auto'}} className={"user-from-detail"}>
+                            <TableContainer style={{width: '100%'}} component={Paper}>
+                                <Table aria-label="user table">
+                                    <TableHead style={{background: '#141212'}}>
+                                        <TableRow>
+                                            <TableCell style={{color: 'white', fontSize: '15px'}} align="center">Customer Name</TableCell>
+                                            <TableCell style={{color: 'white', fontSize: '15px'}}
+                                                       align="center">Gender</TableCell>
+                                            <TableCell style={{color: 'white', fontSize: '15px'}}
+                                                       align="center">NIC</TableCell>
+                                            <TableCell style={{color: 'white', fontSize: '15px'}}
+                                                       align="center">Email</TableCell>
+                                            <TableCell style={{color: 'white', fontSize: '15px'}}
+                                                       align="center">Action</TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+
+                                  {/*          {
+                                        this.state.customers.map((row,index) => (
+                                            <TableRow key={index}>
+                                                <TableCell style={{fontSize: '15px'}}
+                                                           align="center">{row.customer.customer_name}</TableCell>
+                                                <TableCell style={{fontSize: '15px'}}
+                                                           align="center">{row.gender}</TableCell>
+                                                <TableCell style={{fontSize: '15px'}}
+                                                           align="center">{row.nic}</TableCell>
+                                                <TableCell style={{fontSize: '15px'}}
+                                                           align="center">{row.email}</TableCell>
+                                                <TableCell style={{fontSize: '15px'}}
+                                                           align="center">
+                                                    <Tooltip title="Edit">
+                                                        <IconButton
+                                                            onClick={() => {
+                                                                this.updateCustomer(row);
+                                                            }}
+                                                        >
+                                                            <EditIcon color="primary"/>
+                                                        </IconButton>
+                                                    </Tooltip>
+                                                    <Tooltip title="Delete">
+                                                        <IconButton
+                                                            onClick={() => {
+                                                                this.deleteCustomer(row)
+                                                            }}
+                                                        >
+                                                            <DeleteIcon color="error"/>
+                                                        </IconButton>
+                                                    </Tooltip></TableCell>
+                                            </TableRow>
+                                        ))
+                                    }*/}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+                        </div>
+                    </div>
                 </div>
+
             </Fragment>
         );
     }
+
+
+
 }
 
 export default Customer;
