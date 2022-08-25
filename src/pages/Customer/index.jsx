@@ -1,4 +1,3 @@
-import React, {createContext} from "react";
 import {Fragment, Component} from "react";
 import "../Product/style.css";
 import {
@@ -22,8 +21,6 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import NavBar from "../NavBar";
 
-const Name=createContext();
-
 class Customer extends Component {
     constructor(props) {
         super(props);
@@ -35,25 +32,38 @@ class Customer extends Component {
                 email:'',
             },
             gender:["male","female"],
+            btnStatus:"save",
+            index:"",
             customers: [],
         }
     }
 
     saveCustomer = () => {
-        console.log(this.state.customerForm)
-        console.log(this.state.customers)
+        if (this.state.btnStatus==="save"){
+            let customerForm = this.state.customerForm;
+            let customers = this.state.customers;
+            customers.push(customerForm);
+            this.setState({customers})
+        }else{
+            let customers = this.state.customers;
+            customers.pop(this.state.index)
+            let customerForm = this.state.customerForm;
+            customers.push(customerForm);
+            this.setState({customers:customers,btnStatus:"save"})
+        }
+        this.clearFields()
 
-
-        let customerForm = this.state.customerForm;
-        let customers = this.state.customers;
-        customers.push(customerForm);
-        this.setState({customers})
-
-        console.log(this.state.customers)
     }
 
-    updateCustomer(row) {
+    updateCustomer(row,index) {
         console.log(row)
+        this.setState({  customerForm: {
+                customer_name: row.customer_name,
+                gender:row.gender,
+                nic:row.nic,
+                email:row.email,
+            },
+            btnStatus:"update",index:index})
     }
     deleteCustomer(index) {
         let customers = this.state.customers;
@@ -122,9 +132,10 @@ class Customer extends Component {
                                         labelId="demo-simple-select-label"
                                         id="demo-simple-select"
                                         label="User Name"
+                                        value={this.state.customerForm.gender}
                                         onChange={(e) => {
                                             let customerForm = this.state.customerForm;
-                                            customerForm.gender = this.state.gender[e.target.value];
+                                            customerForm.gender = e.target.value;
                                             this.setState({customerForm})
                                         }}
                                     >
@@ -163,7 +174,7 @@ class Customer extends Component {
                                 Clear
                             </Button>
                             <Button variant="outlined" size="large" type="button" onClick={this.saveCustomer}>
-                                Save
+                                {this.state.btnStatus}
                             </Button>
                         </div>
                     </div>
@@ -196,7 +207,7 @@ class Customer extends Component {
                                                 <TableCell style={{fontSize: '15px'}}
                                                            align="center">{row.customer_name}</TableCell>
                                                 <TableCell style={{fontSize: '15px'}}
-                                                           align="center">{row.gender}</TableCell>
+                                                           align="center">{this.state.gender[row.gender]}</TableCell>
                                                 <TableCell style={{fontSize: '15px'}}
                                                            align="center">{row.nic}</TableCell>
                                                 <TableCell style={{fontSize: '15px'}}
@@ -206,7 +217,7 @@ class Customer extends Component {
                                                     <Tooltip title="Edit">
                                                         <IconButton
                                                             onClick={() => {
-                                                                this.updateCustomer(row);
+                                                                this.updateCustomer(row,index);
                                                             }}
                                                         >
                                                             <EditIcon color="primary"/>
@@ -235,9 +246,6 @@ class Customer extends Component {
             </Fragment>
         );
     }
-
-
-
 }
 
 export default Customer;

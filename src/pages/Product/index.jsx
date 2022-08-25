@@ -28,30 +28,45 @@ class Product extends Component {
                 price:'',
                 qty:'',
             },
+            btnStatus:"save",
+            index:"",
             products: [],
         }
     }
 
     saveProduct = () => {
-        console.log(this.state.productForm)
-        console.log(this.state.customers)
+        if (this.state.btnStatus==="save"){
+            let productForm = this.state.productForm;
+            let products = this.state.products;
+            products.push(productForm);
+            this.setState({products})
+        }else {
+            let products = this.state.products;
+            products.pop(this.state.index)
+            let productForm = this.state.productForm;
+            products.push(productForm);
+            this.setState({products:products,btnStatus:"save"})
+        }
 
+        this.clearFields()
 
-        let productForm = this.state.productForm;
-        let products = this.state.products;
-        products.push(productForm);
-        this.setState({products})
-
-        console.log(this.state.products)
     }
 
-    updateProduct(row) {
+    updateProduct(row,index) {
         console.log(row)
+        this.setState({  productForm: {
+                code: row.code,
+                description:row.description,
+                price:row.price,
+                qty:row.qty,
+            },
+        btnStatus:"update",index:index})
     }
     deleteProduct=(index)=> {
         let products = this.state.products;
         products.pop(index)
         this.setState({products})
+
     }
 
 
@@ -115,6 +130,7 @@ class Product extends Component {
                                         id="outlined-basic"
                                         label="price"
                                         variant="outlined"
+                                        type="number"
                                         value={this.state.productForm.price}
                                         onChange={(e) => {
                                             let productForm = this.state.productForm;
@@ -128,6 +144,7 @@ class Product extends Component {
                                         sx={{marginTop: "30px",width:'100%'}}
                                         id="outlined-basic"
                                         label="qty"
+                                        type="number"
                                         variant="outlined"
                                         value={this.state.productForm.qty}
                                         onChange={(e) => {
@@ -153,7 +170,7 @@ class Product extends Component {
                                 Clear
                             </Button>
                             <Button variant="outlined" size="large" type="button" onClick={this.saveProduct}>
-                                Save
+                                {this.state.btnStatus}
                             </Button>
                         </div>
                     </div>
@@ -196,7 +213,7 @@ class Product extends Component {
                                                     <Tooltip title="Edit">
                                                         <IconButton
                                                             onClick={() => {
-                                                                this.updateProduct(row);
+                                                                this.updateProduct(row,index);
                                                             }}
                                                         >
                                                             <EditIcon color="primary"/>
