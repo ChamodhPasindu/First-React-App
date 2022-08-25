@@ -1,7 +1,16 @@
 import React from "react";
 import {Fragment, Component} from "react";
-import "./style.css";
-import {Button, TextField} from "@mui/material";
+import {
+    Button,
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    TextField
+} from "@mui/material";
 import NavBar from '../NavBar'
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
@@ -14,38 +23,45 @@ class Product extends Component {
         super(props)
         this.state = {
             productForm: {
-                title: '',
-                price: '',
-                category: '',
-                image: '',
-                description: '',
+                code: '',
+                description:'',
+                price:'',
+                qty:'',
             },
-            category:[]
+            products: [],
         }
     }
+
+    saveProduct = () => {
+        console.log(this.state.productForm)
+        console.log(this.state.customers)
+
+
+        let productForm = this.state.productForm;
+        let products = this.state.products;
+        products.push(productForm);
+        this.setState({products})
+
+        console.log(this.state.products)
+    }
+    updateProduct(row) {
+        console.log(row)
+    }
+    deleteProduct(row) {
+        console.log(row)
+
+    }
+
 
     clearFields = () => {
         this.setState({
             productForm: {
-                title: '',
-                price: '',
-                category: '',
-                image: '',
-                description: '',
-            }
+                code: '',
+                description:'',
+                price:'',
+                qty:'',
+            },
         })
-    }
-
-    saveProduct = async () => {
-
-    }
-
-    setProductCategory=async ()=>{
-
-    }
-
-    componentDidMount() {
-        this.setProductCategory()
     }
 
 
@@ -54,98 +70,75 @@ class Product extends Component {
             <Fragment>
                 <NavBar/>
                 <div className="manage-container">
-                    <TextField className="manage-sub-container"
-                                   ref="form"
-                                   onSubmit={this.saveProduct}
-                                   onError={errors => console.log(errors)}>
+                    <div className="manage-sub-container">
                         <div className="manage-form-title">
                             <h1>Product Manage</h1>
                         </div>
-                        <div className="manage-form-detail">
-                            <div  className="manage-form-detail-col1">
-                                <div style={{width:'100%'}}>
+                        <div className="manage-form-detail" >
+                            <div className="manage-form-detail-col1">
+                                <div style={{width: '100%'}}>
                                     <TextField
-                                        fullWidth
-                                        id="title"
-                                        label="Title"
+                                        sx={{marginTop: "30px",width:'100%'}}
+                                        id="outlined-basic"
+                                        label="Code"
                                         variant="outlined"
-                                        value={this.state.productForm.title}
-                                        onChange={(e) => {
-                                            let form = this.state.productForm;
-                                            form.title = e.target.value;
-                                            this.setState({form})
-                                        }}
-                                        validators={['required']}/>
-                                </div>
-                                <FormControl fullWidth sx={{marginTop: "30px"}}>
-                                    <InputLabel id="demo-simple-select-label">
-                                        Product Title
-                                    </InputLabel>
-                                    <Select
-                                        labelId="demo-simple-select-label"
-                                        id="demo-simple-select"
-                                        label="Product Title"
+                                        value={this.state.productForm.code}
                                         onChange={(e) => {
                                             let productForm = this.state.productForm;
-                                            productForm.category = this.state.category[e.target.value];
+                                            productForm.code = e.target.value
                                             this.setState({productForm})
                                         }}
-                                    >
-                                        {this.state.category.map((category,index) => (
-                                            <MenuItem value={index}>{category}</MenuItem>
-                                        ))}
-                                    </Select>
-                                </FormControl>
-                                <Button variant="contained" component="label" sx={{marginTop: "30px"}}
-                                        fullWidth>
-                                    Choose Image
-                                    <input hidden accept="image/*" multiple type="file"
-                                           onChange={(e) => {
-                                               let form = this.state.productForm;
-                                               form.image = e.target.value;
-                                               this.setState({form})
-                                           }}/>
-                                </Button>
-
-                            </div>
-                            <div className="manage-form-detail-col1">
-                                <div style={{width:'100%'}}>
-                                    <TextField
-                                        id="price"
-                                        label="Price"
-                                        variant="outlined"
-                                        type="number"
-                                        fullWidth
-                                        value={this.state.productForm.price}
-                                        onChange={(e) => {
-                                            let form = this.state.productForm;
-                                            form.price = e.target.value;
-                                            this.setState({form})
-                                        }}
-                                        validators={['required']}
                                     />
                                 </div>
-                                <div style={{width:'100%'}}>
+                                <div style={{width: '100%'}}>
                                     <TextField
-                                        sx={{marginTop: "30px"}}
-                                        id="description"
-                                        label="Description"
+                                        sx={{marginTop: "30px",width:'100%'}}
+                                        id="outlined-basic"
+                                        label="description"
                                         variant="outlined"
-                                        multiline
-                                        fullWidth
-                                        rows={4}
                                         value={this.state.productForm.description}
                                         onChange={(e) => {
-                                            let form = this.state.productForm;
-                                            form.description = e.target.value;
-                                            this.setState({form})
+                                            let productForm = this.state.productForm;
+                                            productForm.description = e.target.value
+                                            this.setState({productForm})
                                         }}
-                                        validators={['required']}
                                     />
                                 </div>
                             </div>
+                            <div className="manage-form-detail-col1">
+
+                                <div style={{width: '100%'}}>
+                                    <TextField
+                                        sx={{marginTop: "30px",width:'100%'}}
+                                        id="outlined-basic"
+                                        label="price"
+                                        variant="outlined"
+                                        value={this.state.productForm.price}
+                                        onChange={(e) => {
+                                            let productForm = this.state.productForm;
+                                            productForm.price = e.target.value
+                                            this.setState({productForm})
+                                        }}
+                                    />
+                                </div>
+                                <div style={{width: '100%'}}>
+                                    <TextField
+                                        sx={{marginTop: "30px",width:'100%'}}
+                                        id="outlined-basic"
+                                        label="qty"
+                                        variant="outlined"
+                                        value={this.state.productForm.qty}
+                                        onChange={(e) => {
+                                            let productForm = this.state.productForm;
+                                            productForm.qty = e.target.value
+                                            this.setState({productForm})
+                                        }}
+                                    />
+                                </div>
+
+                            </div>
                         </div>
-                        <div style={{marginTop: '50px'}} className="manage-form-btn">
+                        <div className="manage-form-btn">
                             <Button
                                 variant="outlined"
                                 color="error"
@@ -157,12 +150,75 @@ class Product extends Component {
                             >
                                 Clear
                             </Button>
-                            <Button variant="outlined" size="large" type="submit">
+                            <Button variant="outlined" size="large" type="button" onClick={this.saveProduct}>
                                 Save
                             </Button>
                         </div>
-                    </TextField>
+                    </div>
+
+                    <div className="user-sub-table-container">
+                        <div className="user-form-title">
+                            <h1>All Product</h1>
+                        </div>
+                        <div style={{overflow: 'auto'}} className={"user-from-detail"}>
+                            <TableContainer style={{width: '100%'}} component={Paper}>
+                                <Table aria-label="user table">
+                                    <TableHead style={{background: '#141212'}}>
+                                        <TableRow>
+                                            <TableCell style={{color: 'white', fontSize: '15px'}} align="center">Code</TableCell>
+                                            <TableCell style={{color: 'white', fontSize: '15px'}}
+                                                       align="center">Price</TableCell>
+                                            <TableCell style={{color: 'white', fontSize: '15px'}}
+                                                       align="center">Description</TableCell>
+                                            <TableCell style={{color: 'white', fontSize: '15px'}}
+                                                       align="center">Quantity</TableCell>
+                                            <TableCell style={{color: 'white', fontSize: '15px'}}
+                                                       align="center">Action</TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+
+                                        {/*          {
+                                        this.state.customers.map((row,index) => (
+                                            <TableRow key={index}>
+                                                <TableCell style={{fontSize: '15px'}}
+                                                           align="center">{row.code}</TableCell>
+                                                <TableCell style={{fontSize: '15px'}}
+                                                           align="center">{row.gender}</TableCell>
+                                                <TableCell style={{fontSize: '15px'}}
+                                                           align="center">{row.nic}</TableCell>
+                                                <TableCell style={{fontSize: '15px'}}
+                                                           align="center">{row.email}</TableCell>
+                                                <TableCell style={{fontSize: '15px'}}
+                                                           align="center">
+                                                    <Tooltip title="Edit">
+                                                        <IconButton
+                                                            onClick={() => {
+                                                                this.updateCustomer(row);
+                                                            }}
+                                                        >
+                                                            <EditIcon color="primary"/>
+                                                        </IconButton>
+                                                    </Tooltip>
+                                                    <Tooltip title="Delete">
+                                                        <IconButton
+                                                            onClick={() => {
+                                                                this.deleteCustomer(row)
+                                                            }}
+                                                        >
+                                                            <DeleteIcon color="error"/>
+                                                        </IconButton>
+                                                    </Tooltip></TableCell>
+                                            </TableRow>
+                                        ))
+                                    }*/}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+                        </div>
+                    </div>
                 </div>
+
             </Fragment>
         );
     }

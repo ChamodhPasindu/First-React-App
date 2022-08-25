@@ -198,7 +198,7 @@ class Customer extends Component {
                                         this.state.customers.map((row,index) => (
                                             <TableRow key={index}>
                                                 <TableCell style={{fontSize: '15px'}}
-                                                           align="center">{row.customer.customer_name}</TableCell>
+                                                           align="center">{row.customer_name}</TableCell>
                                                 <TableCell style={{fontSize: '15px'}}
                                                            align="center">{row.gender}</TableCell>
                                                 <TableCell style={{fontSize: '15px'}}
